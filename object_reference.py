@@ -1,16 +1,28 @@
 #对象和引用
-L = [1, 2, 3]
-D = {'a' : 1, 'b' : 2}
-A = L[:]
-B = D.copy()
 
-print(L, D)
-print(A, B)
+values = [0, 1, 2]
+values[1] = values
+print(values) #赋值无限次
 
-print(id(L))
-print(id(A))
+values = [0, 1, 2]
+values[1] = values[:]
+print(values) #[0,[0, 1, 2], 2]
 
-A[1] = 'NI'
-B['c'] = 'spam'
-print(L, D)
-print(A, B)
+a = [0, [1, 2], 3]
+b = a[:]
+a[0] = 8
+a[1][1] = 9
+
+print(a)
+print(b)
+
+import copy
+a = [0, [1, 2], 3]
+b = copy.deepcopy(a)
+a[0] = 8
+a[1][1] = 9
+
+print(a)
+print(b)
+
+
