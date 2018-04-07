@@ -25,6 +25,7 @@ def add_end(animals=[]):
 print(add_end(['dog']))
 print()
 print(add_end(['cat']))
+print()
 print(add_end())
 print(add_end())
 

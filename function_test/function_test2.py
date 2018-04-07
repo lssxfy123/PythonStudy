@@ -15,7 +15,7 @@ describe_pet('hamster', 'harry')
 describe_pet('dog', 'willie')
 
 # 带有关键字的位置实参，传递给函数key-value对
-# 如果使用了关键字实参，所有的位置参数都要使用
+# 如果使用了关键字实参，则需要放置在所有的位置参数之后
 # 关键字实参不允许重复，但顺序可以随意
 # describe_pet(animal_type='cat', 'Tom')  # Error
 # describe_pet(pet_name='cat', pet_name='Tom')  # Error
