@@ -13,7 +13,7 @@ m = 7
 n = m // 2  # floor除法
 
 # while循环如果发生break，就不会执行else
-# 如果while循环的条件不再满足，就会执行else语句块
+# 如果不触发break并且while循环的条件不再满足，就会执行else语句块
 # 这种用法可以省去其他语言类似功能需要的标志位
 while n > 1:
     if m % n == 0:
