@@ -23,7 +23,7 @@ your_dog = Dog("Tom", 7)
 my_dog.sit()
 your_dog.sit()
 print(my_dog.name)
-# print(my_dog.__age)
+# print(my_dog.__age)  # Error
 
 # 可以给类的实例绑定属性
 # 但只有该实例可用
