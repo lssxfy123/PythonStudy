@@ -3,6 +3,7 @@
 # Date: 2018.6.7
 # pop3接收邮件
 import poplib
+from email.parser import Parser
 
 email = 'liushenshenxfy@126.com'
 password = 'lss19871203'
@@ -19,3 +20,8 @@ resp, mails, octets = server.list()
 
 # 获取最新邮件
 index = len(mails)
+resp, lines, octets = server.retr(index)
+message_content = b'\r\n'.join(lines).decode('utf-8')
+message = Parser().parsestr(message_content)
+
+server.quit()
