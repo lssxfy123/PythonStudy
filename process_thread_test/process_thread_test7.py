@@ -4,16 +4,13 @@
 # 多线程访问网站
 from atexit import register
 from re import compile
-from re import match
 from threading import Thread
 from time import ctime
 from urllib.request import urlopen as uopen
 
-regex = '图书商品里排第#([\d,]+)  '
+regex = compile(r'图书商品里排第([\d,]+)')
 amazon = 'https://amazon.cn/dp/'
-isbns = {'0132269937': 'Core Python Programming'}#,
-         #'0132356139': 'Python Web Development with Django',
-         #'0137143419': 'Python Fundamentals'}
+isbns = {'0132269937': 'Core Python Programming'}
 
 
 def get_ranking(isbn):
@@ -23,13 +20,11 @@ def get_ranking(isbn):
     page.close()
     # print(type(data))
     # 将data转换为str
-    # print(data)
     data1 = data.decode('utf-8')
-    #print(data1)
 
-    result = match(regex, data1)  #  regex.findall(data1)
-    print(result)
-    return result[0]
+    result = regex.search(data1)
+    # print(result)
+    return result.group(1)
 
 
 def show_ranking(isbn):
