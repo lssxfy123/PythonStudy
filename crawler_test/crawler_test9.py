@@ -1,6 +1,6 @@
 # Copyright(C) 2018 刘珅珅
 # Environment: python 3.6.4
-# Date: 2018.6.234
+# Date: 2018.6.24
 # 爬取豆瓣音乐TOP250并存入数据库
 import pymongo
 import requests
