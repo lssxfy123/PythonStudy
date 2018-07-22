@@ -16,7 +16,7 @@ class CrawlerPictures:
     def __init__(self, total_url):
         self.total_url = total_url
         self.max_page_number = 1
-        self.firs_layer_urls = []
+        self.first_layer_urls = []
         self.pictures = []
         self.host_headers = {
             'Host': 'www.mzitu.com',
@@ -43,11 +43,11 @@ class CrawlerPictures:
         pages = selector.xpath('//div[@class="nav-links"]/a[@class="page-numbers"]/text()')
         self.max_page_number = int(pages[-1])
         for i in range(1, self.max_page_number + 1):
-            self.firs_layer_urls.append(self.url_header + str(i))
+            self.first_layer_urls.append(self.url_header + str(i))
 
     # 获取第二层所有url
     def get_second_layer_url(self):
-        for url in self.firs_layer_urls:
+        for url in self.first_layer_urls:
             html = requests.get(url, headers=self.host_headers)
             if html.status_code == 200:
                 selector = etree.HTML(html.content)
