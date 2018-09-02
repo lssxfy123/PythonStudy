@@ -11,7 +11,7 @@ from scrapy.loader import ItemLoader
 class PicturespiderSpider(scrapy.Spider):
     name = 'picturespider'
     allowed_domains = ['web']
-    start_urls = ['http://t66y.com/thread0806.php?fid=16&search=&page={0}'.format(i) for i in range(3, 21)]
+    start_urls = ['http://t66y.com/thread0806.php?fid=16&search=&page={0}'.format(i) for i in range(1, 3)]
 
     def __init__(self):
         self.http_header = "http://t66y.com/"

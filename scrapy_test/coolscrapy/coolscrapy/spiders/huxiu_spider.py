@@ -1,5 +1,5 @@
 from coolscrapy.items import HuxiuItem
-from scrapy import  Request, Spider
+from scrapy import Request, Spider
 
 
 class HuxiuSpider(Spider):
