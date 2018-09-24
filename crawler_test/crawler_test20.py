@@ -37,7 +37,7 @@ class CrawlerPictures:
 
         self.url_header = 'http://www.mzitu.com/page/'
 
-        self.date_time = datetime.datetime.strptime('2018-07-29', '%Y-%m-%d')
+        self.date_time = datetime.datetime.strptime('2018-08-05', '%Y-%m-%d')
 
     # 获取第一层所有url
     def get_first_layer_url(self):
