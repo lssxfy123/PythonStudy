@@ -16,8 +16,8 @@ from ctypes import *
 
 
 class CrawlerPictures:
-    def __init__(self, total_url):
-        self.total_url = total_url
+    def __init__(self, urls_file):
+        self.urls_file = urls_file
         self.max_page_number = 1
         self.first_layer_urls = []
         self.picture_urls = []
@@ -36,13 +36,12 @@ class CrawlerPictures:
 
     # 获取第一层所有url
     def get_first_layer_url(self):
-        html = requests.get(self.total_url, headers=self.host_headers)
-        selector = etree.HTML(html.content)
-        pages = selector.xpath('//div[@class="boxs"]/ul/li/a')
-        for page in pages:
-            picture = PictureUrl(page, self.host_headers)
-            picture.get_image_url()
-            self.first_layer_urls.append(picture)
+        with open(self.urls_file) as file_lines:
+            lines = file_lines.readlines()
+            for line in lines:
+                picture = PictureUrl(line, self.host_headers)
+                picture.get_image_url()
+                self.first_layer_urls.append(picture)
 
     # 获取所有图片
     def get_images(self):
@@ -91,29 +90,38 @@ class CrawlerPictures:
 
 class PictureUrl:
     def __init__(self, picture_url, host_headers):
-        self.title = picture_url.xpath('img/@alt')[0]
-        self.number = re.findall('\[(\d+)\]', self.title)[0]
-        self.save_path = "d:/pictures/"
-        self.urls = []
-        self.href = picture_url.get('href')
-        self.item_number = re.findall('(\d+)', self.href)[0]
-        self.host_headers = host_headers
-        file_path = self.save_path + re.sub('[\/:*?"<>|]', '', self.title.strip())
+        self.proxies = {'http': '118.190.95.35:9001'}
+        html = requests.get(picture_url, headers=host_headers, proxies=self.proxies)
+        self.is_found = True
+        if html.status_code == 404:
+            print('not found')
+            self.is_found = False
+        else:
+            selector = etree.HTML(html.content)
+            self.title = selector.xpath('.//div[@class="weizhi"]/h1/text()')[0]
+            number_text = selector.xpath('.//div[@class="c_l"]/p[last()-3]/text()')[0]
+            self.number = re.findall('(\d+)', number_text)[0]
+            self.save_path = "d:/pictures/"
+            self.urls = []
+            self.href = picture_url
+            self.item_number = re.findall('(\d+)', self.href)[0]
+            self.host_headers = host_headers
+            file_path = self.save_path + re.sub('[\/:*?"<>|]', '', self.title.strip())
 
-        if not os.path.exists(file_path):
-            os.makedirs(file_path)
-        self.file_path = file_path
-        self.header_url = 'https://mtl.ttsqgs.com/images/img/'
+            if not os.path.exists(file_path):
+                os.makedirs(file_path)
+            self.file_path = file_path
+            self.header_url = 'https://mtl.ttsqgs.com/images/img/'
 
     def get_image_url(self):
-        for j in range(1, int(self.number) + 1):
-            url = self.header_url + self.item_number + '/' + str(j) + '.jpg'
-            self.urls.append(url)
+        if self.is_found:
+            for j in range(1, int(self.number) + 1):
+                url = self.header_url + self.item_number + '/' + str(j) + '.jpg'
+                self.urls.append(url)
 
 
 if __name__ == '__main__':
-    total_url = "https://www.meitulu.com/search/%E9%9B%AA%E7%B3%95"
-    crawler_picture = CrawlerPictures(total_url)
+    crawler_picture = CrawlerPictures('urls.txt')
     crawler_picture.get_first_layer_url()
     crawler_picture.get_images()
     crawler_picture.close()
