@@ -36,8 +36,10 @@ class CrawlerPictures:
         }
 
         self.url_header = 'http://www.mzitu.com/page/'
+        with open('date.txt') as file_obj:
+            date_time = file_obj.read()
 
-        self.date_time = datetime.datetime.strptime('2018-10-07', '%Y-%m-%d')
+        self.date_time = datetime.datetime.strptime(date_time, '%Y-%m-%d')
 
     # 获取第一层所有url
     def get_first_layer_url(self):
