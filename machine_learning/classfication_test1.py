@@ -59,6 +59,9 @@ LR.fit(X_train, y_train)
 # LR预测
 lr_y_predict = LR.predict(X_test)
 
+# 输出概率
+lr_proba = LR.predict_proba(X_test)
+
 # 调用SGDClassifier来训练模型
 SGDC.fit(X_train, y_train)
 
