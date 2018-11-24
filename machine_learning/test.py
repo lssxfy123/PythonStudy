@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import Counter
+import datetime
 
 
 # 加载数据集
@@ -52,13 +53,16 @@ for i in np.arange(ingredients.size):
 # print(sum_ingredients)
 # print(italian_ingredients)
 
-bags_of_words = list()
+bags_of_words = Counter()
+print(datetime.datetime.now())
 for recipe in ingredients:
     tmp = Counter(recipe)
-    bags_of_words.append(tmp)
+    bags_of_words += tmp
 
-# print(bags_of_words[0])
-bags = Counter()
+print(datetime.datetime.now())
+print(bags_of_words)
+
+# bags = Counter()
 # 数据量太大，Counter中的字典太长
 # for bag in bags_of_words:
 #     bags += bag
