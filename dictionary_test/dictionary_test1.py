@@ -7,6 +7,12 @@ alien_0 = {'color': 'green', 'points': 5}
 print(alien_0)
 print(alien_0['color'])
 print(alien_0['points'])
+
+# 使用get方法可以有效避免键不存在的异常
+# get方法对于不存在的键会返回None
+print(alien_0.get('color'))  # green
+print(alien_0.get('color1'))  # None
+# print(alien_0['color1'])  # KeyError异常
 print()
 
 # 键的唯一性

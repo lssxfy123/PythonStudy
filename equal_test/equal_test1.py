@@ -9,6 +9,13 @@ print("a == b:" + str(a == b))
 print("a is b:" + str(a is b))
 print()
 
+tuple_a = 1, 2  # 元组可以省略()
+tuple_b = (1, 2)
+
+print("tuple_a == tuple_b:" + str(tuple_a == tuple_b))  # True
+print("tuple_a is tuple_b " + str(tuple_a is tuple_b))  # False
+print()
+
 L = [1, 2, 3]
 M = [1, 2, 3]
 print("L == M:" + str(L == M))

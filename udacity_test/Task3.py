@@ -41,11 +41,15 @@ to other fixed lines in Bangalore."
 """
 
 numbers_called_by_Bangalore = []
+count = 0
 for call in calls:
     if call[0].startswith('(080)'):
         if call[1].startswith('('):
             index = call[1].index(')')
             code = call[1][1:index]
+            if code == "080":
+                count += 1
+
             if code not in numbers_called_by_Bangalore:
                 numbers_called_by_Bangalore.append(code)
         elif " " in call[1]:
@@ -57,4 +61,5 @@ for call in calls:
             if "140" not in numbers_called_by_Bangalore:
                 numbers_called_by_Bangalore.append("140")
 
-print(numbers_called_by_Bangalore)
+print("\n".join(sorted(numbers_called_by_Bangalore)))
+print(format(count / len(calls), ".2f"))
