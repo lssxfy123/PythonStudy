@@ -15,3 +15,7 @@ for name, assignment, grade in zip(names, assignments, grades):
               " current grade is {} and can increase to {} if you submit all assignments before " \
               "the due date\n".format(name, assignment, grade, int(grade) + 2 * int(assignment))
     print(message)
+
+
+def func():
+    print("udacity test 5")
