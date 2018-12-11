@@ -20,6 +20,8 @@ env_data = [[3, 0, 0, 0, 0, 0, 0, 0, 1],
 rows = len(env_data)
 columns = len(env_data[0])
 
+marks = [[0 for j in range(columns)] for i in range(columns)]
+
 loc_map = {}
 has_start = False
 has_destination = False
@@ -109,14 +111,16 @@ def depth_first_search(env_data, loc):
 
     actions = valid_actions(env_data, loc)
     for action in actions:
-        x = loc[0]
-        y = loc[1]
-        env_data[x][y] = 2
-        current_path.append(loc)
-        loc = move_robot(loc, action)
-        depth_first_search(env_data, loc)
-        env_data[x][y] = 0
-        current_path.pop()
+        new_loc = move_robot(loc, action)
+        x = new_loc[0]
+        y = new_loc[1]
+        if marks[x][y] == 0:
+            marks[x][y] = 2
+            loc = new_loc
+            current_path.append(loc)
+            depth_first_search(env_data, loc)
+            marks[x][y] = 0
+            current_path.pop()
 
 
 depth_first_search(env_data, robot_current_loc)
