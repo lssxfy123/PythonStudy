@@ -37,11 +37,13 @@ for row in range(rows):
 
 robot_current_loc = loc_map['start']
 robot_destination_loc = loc_map['destination']
-x_destination = robot_destination_loc[0]
-y_destination = robot_destination_loc[1]
-current_path = []
-best_path = []
-paths = 0
+x_start = robot_current_loc[0]
+y_start = robot_current_loc[1]
+marks[x_start][y_start] = 2
+every_actions = []
+total_actions = []
+best_actions = []
+actions_count = 0
 
 
 def is_move_valid(env_data, loc, act):
@@ -97,32 +99,36 @@ def valid_actions(env_data, loc):
     return actions
 
 
+## 深度优先搜索
 def depth_first_search(env_data, loc):
-    global best_path
-    global paths
-    if loc == robot_destination_loc:
-        paths += 1
-        current_path.append(robot_destination_loc)
-        if len(best_path) == 0:
-            best_path = current_path[:]
-        elif len(best_path) > len(current_path):
-            best_path = current_path[:]
+    global best_actions
+    global actions_count
+    if loc == robot_destination_loc:  ## 如果行走到终点
+        actions_count += 1
+        total_actions.append(every_actions[:])
+        ## 判断是否为最佳策略
+        if len(best_actions) == 0:
+            best_actions = every_actions[:]
+        elif len(best_actions) > len(every_actions):
+            best_actions = every_actions[:]
         return
 
-    actions = valid_actions(env_data, loc)
+    actions = valid_actions(env_data, loc)  ## 查找所有可行动作
     for action in actions:
-        new_loc = move_robot(loc, action)
+        new_loc = move_robot(loc, action)  ## 新的位置点
         x = new_loc[0]
         y = new_loc[1]
-        if marks[x][y] == 0:
-            marks[x][y] = 2
-            loc = new_loc
-            current_path.append(loc)
-            depth_first_search(env_data, loc)
-            marks[x][y] = 0
-            current_path.pop()
+        if marks[x][y] == 0:  ## 如果该点未走过
+            marks[x][y] = 2  ## 将该点标记为已走过
+            every_actions.append(action)  ## 将动作插入策略列表
+            depth_first_search(env_data, new_loc)  ## 进行下一个点的尝试
+            marks[x][y] = 0  ## 尝试结束，将该点标记为未走
+            every_actions.pop()  ## 将该动作从策略列表弹出
 
 
 depth_first_search(env_data, robot_current_loc)
-print(best_path)
-print(paths)
+print("总共有{}种行走策略".format(actions_count))
+for i in range(actions_count):
+    print("策略{}：".format(i + 1), "->".join(total_actions[i]))
+print("最佳策略为：", "->".join(best_actions))
+
