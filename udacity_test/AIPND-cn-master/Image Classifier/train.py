@@ -91,7 +91,7 @@ if __name__ == '__main__':
         hidden_layers = args.hidden_units
     
     device = 'cpu'
-    if args.gpu:
+    if args.gpu & torch.cuda.is_available():
         device = 'gpu'
     
     epochs = 10

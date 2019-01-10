@@ -43,7 +43,7 @@ if __name__ == '__main__':
         top_k = args.top_k
 
     device = 'cpu'
-    if args.gpu:
+    if args.gpu & torch.cuda.is_available():
         device = 'gpu'
     
     model = model_process.load_model(checkpoint)
