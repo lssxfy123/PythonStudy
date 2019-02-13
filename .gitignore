@@ -1,3 +1,5 @@
 *.idea
 /crawler_test/urls.txt
 /crawler_test/date.txt
+/udacity_test/machine_learn/pca/data/lfw_home/joblib
+/udacity_test/machine_learn/pca/data/lfw_home/lfw_funneled
