@@ -1,5 +1,5 @@
 import random
-import numpy as np
+import math
 
 class Robot(object):
 
@@ -46,8 +46,10 @@ class Robot(object):
             self.epsilon = 0.0
         else:
             # TODO 2. Update parameters when learning
-            self.epsilon = 1.0 / (self.t / 2 + 1) #np.exp(-self.t)
             self.t += 1
+            self.epsilon = 1 / self.t #np.exp(-self.t)
+            
+
 
         return self.epsilon
 
@@ -68,8 +70,9 @@ class Robot(object):
         # Qtable[state] ={'u':xx, 'd':xx, ...}
         # If Qtable[state] already exits, then do
         # not change it.
-        if state not in self.Qtable:
-            self.Qtable[state] = dict([(key, 0.0) for key in self.maze.valid_actions])
+        self.Qtable.setdefault(state, {a: 0.0 for a in self.maze.valid_actions})
+#         if state not in self.Qtable:
+#             self.Qtable[state] = dict([(key, 0.0) for key in self.maze.valid_actions])
 
     def choose_action(self):
         """
