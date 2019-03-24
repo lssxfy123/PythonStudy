@@ -10,3 +10,8 @@
 /udacity_test/machine_learn/MLND_CN_Graduate/images
 /udacity_test/machine_learn/MLND_CN_Graduate/dogs-vs-cats
 /udacity_test/machine_learn/MLND_CN_Graduate/*.h5
+/udacity_test/machine_learn/MLND_CN_Graduate/*.csv
+/udacity_test/machine_learn/MLND_CN_Graduate/*.hdf5
+/udacity_test/machine_learn/MLND_CN_Graduate/*.npz
+/udacity_test/machine_learn/dogs-vs-cats-redux-master/dogs-vs-cats
+/udacity_test/machine_learn/dogs-vs-cats-redux-master/submissions
