@@ -4,15 +4,17 @@ from tqdm import tqdm
 from PIL import ImageFile 
 import numpy as np
 import os
+import random
+import shutil
 
-train_path = 'dogs-vs-cats/train1/'
-test_path = 'dogs-vs-cats/test1/'
-valid_path = 'dogs-vs-cats/valid1/'
+train_path = 'dogs-vs-cats/train/'
+test_path = 'dogs-vs-cats/test/'
+valid_path = 'dogs-vs-cats/valid/'
 if not os.path.exists(valid_path):
     os.mkdir(valid_path)
     
 
-batch_size = 16
+batch_size = 20
 
     
 def path_to_tensor(img_path, target_size):
@@ -68,3 +70,20 @@ def data_generator(target_size):
                                                     batch_size=batch_size, class_mode='binary')
     
     return train_generator, valid_generator
+
+
+def extract_features(base_model, target_size, preprocess):
+    datagen = ImageDataGenerator(preprocessing_function=preprocess)
+    train_generator = datagen.flow_from_directory(train_path, target_size=target_size,
+                                                    batch_size=batch_size, class_mode='binary', shuffle=False)
+    valid_generator = datagen.flow_from_directory(valid_path, target_size=target_size,
+                                                    batch_size=batch_size, class_mode='binary', shuffle=False)
+    test_generator = datagen.flow_from_directory(test_path, target_size=target_size, batch_size=batch_size, class_mode=None, shuffle=True)
+    train_features = base_model.predict_generator(train_generator, train_generator.samples // batch_size)
+    valid_features = base_model.predict_generator(valid_generator, valid_generator.samples // batch_size)
+    test_featrues = base_model.predict_generator(test_generator, test_generator.samples // batch_size)
+    
+    features_name = '{0}_features.npz'.format(base_model.name)
+    np.savez(features_name,train=train_features, train_label=train_generator.classes,
+             valid=valid_features, valid_label=valid_generator.classes, test=test_featrues, test_filename=test_generator.filenames)
+    return features_name
