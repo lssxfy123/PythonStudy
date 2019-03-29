@@ -78,12 +78,22 @@ def extract_features(base_model, target_size, preprocess):
                                                     batch_size=batch_size, class_mode='binary', shuffle=False)
     valid_generator = datagen.flow_from_directory(valid_path, target_size=target_size,
                                                     batch_size=batch_size, class_mode='binary', shuffle=False)
-    test_generator = datagen.flow_from_directory(test_path, target_size=target_size, batch_size=batch_size, class_mode=None, shuffle=True)
+    test_generator = datagen.flow_from_directory(test_path, target_size=target_size, batch_size=batch_size, class_mode=None, shuffle=False)
     train_features = base_model.predict_generator(train_generator, train_generator.samples // batch_size)
     valid_features = base_model.predict_generator(valid_generator, valid_generator.samples // batch_size)
-    test_featrues = base_model.predict_generator(test_generator, test_generator.samples // batch_size)
+    test_features = base_model.predict_generator(test_generator, test_generator.samples // batch_size)
     
     features_name = '{0}_features.npz'.format(base_model.name)
     np.savez(features_name,train=train_features, train_label=train_generator.classes,
-             valid=valid_features, valid_label=valid_generator.classes, test=test_featrues, test_filename=test_generator.filenames)
+             valid=valid_features, valid_label=valid_generator.classes, test=test_features, test_filename=test_generator.filenames)
     return features_name
+
+
+def extract_test_features(base_model, target_size, preprocess):
+    datagen = ImageDataGenerator(preprocessing_function=preprocess)
+    test_generator = datagen.flow_from_directory(test_path, target_size=target_size, batch_size=batch_size, class_mode=None, shuffle=False)
+    test_features = base_model.predict_generator(test_generator, test_generator.samples // batch_size)
+    
+    test_features_name = 'test_{0}_features.npz'.format(base_model.name)
+    np.savez(test_features_name, test=test_features, test_filename=test_generator.filenames)
+    return test_features_name
