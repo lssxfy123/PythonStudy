@@ -12,7 +12,15 @@ test_path = 'dogs-vs-cats/test/'
 valid_path = 'dogs-vs-cats/valid/'
 if not os.path.exists(valid_path):
     os.mkdir(valid_path)
-    
+
+small_train_path = 'dogs-vs-cats/small_train/'
+small_test_path = 'dogs-vs-cats/small_test/'
+small_valid_path = 'dogs-vs-cats/small_valid/'
+
+if not os.path.exists(small_train_path):
+    os.mkdir(small_train_path)
+    os.mkdir(small_test_path)
+    os.mkdir(small_valid_path)
 
 batch_size = 20
 
@@ -28,16 +36,28 @@ def paths_to_tensor(img_paths, target_size):
     return np.vstack(list_of_tensors)
 
 
-def move_data(names, divide_train_path, divide_valid_path):
+def move_data(names, divide_train_path, divide_valid_path, divide_small_train_path, divide_small_valid_path):
     os.mkdir(divide_train_path)
-    os.mkdir(divide_valid_path)      
+    os.mkdir(divide_valid_path)
+    os.mkdir(divide_small_train_path)
+    os.mkdir(divide_small_valid_path) 
+    small_valid_names = random.sample(names, 200)
+    small_train_names = random.sample(names, 800)
     valid_names = random.sample(names, int(len(names) * 0.2))
     train_names = [name for name in names if name not in valid_names]
+    [shutil.copy(train_path + name, divide_small_train_path + name) for name in small_train_names]
+    [shutil.copy(train_path + name, divide_small_valid_path + name) for name in small_valid_names]
     [shutil.move(train_path + name, divide_train_path + name) for name in train_names]
     [shutil.move(train_path + name, divide_valid_path + name) for name in valid_names]
 
     
 def divide_images():
+    # 小规模训练集
+    small_train_dog_path = small_train_path + 'dog/'
+    small_train_cat_path = small_train_path + 'cat/'
+    small_valid_dog_path = small_valid_path + 'dog/'
+    small_valid_cat_path = small_valid_path + 'cat/'
+    
     # 训练集
     train_dog_path = train_path + 'dog/'
     train_cat_path = train_path + 'cat/'
@@ -48,13 +68,17 @@ def divide_images():
         names= os.listdir(train_path)
         cat_names = [name for name in names if name.startswith('cat')]
         dog_names = [name for name in names if name.startswith('dog')]
-        move_data(cat_names, train_cat_path, valid_cat_path)
-        move_data(dog_names, train_dog_path, valid_dog_path)
+        move_data(cat_names, train_cat_path, valid_cat_path, small_train_cat_path, small_valid_cat_path)
+        move_data(dog_names, train_dog_path, valid_dog_path, small_train_dog_path, small_valid_dog_path)
     
     divide_test_path = test_path + 'test/'
+    divide_small_test_path = small_test_path + 'test/'
     if not os.path.exists(divide_test_path):
         names = os.listdir(test_path)
+        small_names = random.sample(names, 500)
         os.mkdir(divide_test_path)
+        os.mkdir(divide_small_test_path)
+        [shutil.copy(test_path + name, divide_small_test_path + name) for name in small_names]
         [shutil.move(test_path + name, divide_test_path + name) for name in names]
 
         
@@ -78,22 +102,43 @@ def extract_features(base_model, target_size, preprocess):
                                                     batch_size=batch_size, class_mode='binary', shuffle=False)
     valid_generator = datagen.flow_from_directory(valid_path, target_size=target_size,
                                                     batch_size=batch_size, class_mode='binary', shuffle=False)
-    test_generator = datagen.flow_from_directory(test_path, target_size=target_size, batch_size=batch_size, class_mode=None, shuffle=False)
-    train_features = base_model.predict_generator(train_generator, train_generator.samples // batch_size)
-    valid_features = base_model.predict_generator(valid_generator, valid_generator.samples // batch_size)
-    test_features = base_model.predict_generator(test_generator, test_generator.samples // batch_size)
+    train_features = base_model.predict_generator(train_generator, train_generator.samples // batch_size, verbose=1)
+    valid_features = base_model.predict_generator(valid_generator, valid_generator.samples // batch_size, verbose=1)
     
     features_name = '{0}_features.npz'.format(base_model.name)
     np.savez(features_name,train=train_features, train_label=train_generator.classes,
-             valid=valid_features, valid_label=valid_generator.classes, test=test_features, test_filename=test_generator.filenames)
+             valid=valid_features, valid_label=valid_generator.classes)
     return features_name
 
 
 def extract_test_features(base_model, target_size, preprocess):
     datagen = ImageDataGenerator(preprocessing_function=preprocess)
     test_generator = datagen.flow_from_directory(test_path, target_size=target_size, batch_size=batch_size, class_mode=None, shuffle=False)
-    test_features = base_model.predict_generator(test_generator, test_generator.samples // batch_size)
+    test_features = base_model.predict_generator(test_generator, test_generator.samples // batch_size, verbose=1)
     
     test_features_name = 'test_{0}_features.npz'.format(base_model.name)
+    np.savez(test_features_name, test=test_features, test_filename=test_generator.filenames)
+    return test_features_name
+
+def extract_small_features(base_model, target_size, preprocess):
+    datagen = ImageDataGenerator(preprocessing_function=preprocess)
+    train_generator = datagen.flow_from_directory(small_train_path, target_size=target_size,
+                                                    batch_size=batch_size, class_mode='binary', shuffle=False)
+    valid_generator = datagen.flow_from_directory(small_valid_path, target_size=target_size,
+                                                    batch_size=batch_size, class_mode='binary', shuffle=False)
+    train_features = base_model.predict_generator(train_generator, train_generator.samples // batch_size, verbose=1)
+    valid_features = base_model.predict_generator(valid_generator, valid_generator.samples // batch_size, verbose=1)
+    
+    features_name = 'small_{0}_features.npz'.format(base_model.name)
+    np.savez(features_name,train=train_features, train_label=train_generator.classes,
+             valid=valid_features, valid_label=valid_generator.classes)
+    return features_name
+
+def extract_small_test_features(base_model, target_size, preprocess):
+    datagen = ImageDataGenerator(preprocessing_function=preprocess)
+    test_generator = datagen.flow_from_directory(small_test_path, target_size=target_size, batch_size=batch_size, class_mode=None, shuffle=False)
+    test_features = base_model.predict_generator(test_generator, test_generator.samples // batch_size, verbose=1)
+    
+    test_features_name = 'small_test_{0}_features.npz'.format(base_model.name)
     np.savez(test_features_name, test=test_features, test_filename=test_generator.filenames)
     return test_features_name
