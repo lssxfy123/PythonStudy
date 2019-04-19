@@ -20,7 +20,7 @@
 
 ### 代码
 
-代码包含在`graduate.ipynb`和`graduate_small.ipynb`这两个notebook文件中，其中`graduate.ipynb`为全部数据集的训练+预测，`graduate_small.ipynb`为小批量数据集的训练+优化。还会用到`common.py`文件。
+代码包含在`graduate.ipynb`和`graduate_clean.ipynb`这两个notebook文件中，其中`graduate.ipynb`为全部数据集的训练+预测，`graduate_small.ipynb`为对训练集异常数据的清洗。还会用到`common.py`文件。
 
 
 ### 运行
@@ -31,7 +31,7 @@ jupyter notebook graduate.ipynb
 ```
 
 ```bash
-jupyter notebook graduate_small.ipynb
+jupyter notebook graduate_clean.ipynb
 ```
 
 ​这会启动 Jupyter Notebook 并把项目文件打开在你的浏览器中。
