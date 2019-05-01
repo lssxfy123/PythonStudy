@@ -91,7 +91,7 @@ class CrawlerPictures:
 class PictureUrl:
     def __init__(self, url_info, host_headers):
         picture_url = url_info.split(';')[0]
-        self.title = re.findall('(\d+)', picture_url)[0]
+        self.title = url_info.split(';')[2]
         # number_text = selector.xpath('.//div[@class="c_l"]/p[last()-3]/text()')[0]
         self.start_number = url_info.split(';')[1].split('-')[0]  # re.findall('(\d+)', number_text)[0]
         self.end_number = url_info.split(';')[1].split('-')[1]
