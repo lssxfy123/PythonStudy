@@ -25,7 +25,7 @@ class ThirdClass(class_detail3.SecondClass):
 if __name__ == '__main__':
     a = ThirdClass('abc')
     a.display()
-    print(a)
+    print(a)  # __str__被调用
     print()
 
     b = a + 'xyz'

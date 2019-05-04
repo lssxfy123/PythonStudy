@@ -22,7 +22,7 @@ def parameter_sequence1(a, b, c=0, *args, **kw):
     print('a = ', a, 'b = ', b, 'c = ', c, 'args = ', args, 'kw = ', kw)
 
 
-# c为命名关键字参数
+# c为命名关键字参数，并带有默认值(如果没有默认值，就需要显式赋值)
 # 如果参数中有可变参数，就不需要
 # 使用*来定义命名关键字参数
 def parameter_sequence2(a, b, *args, c=0, **kw):

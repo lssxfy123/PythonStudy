@@ -10,7 +10,7 @@ def maker(n):
     return action
 
 
-f = maker(2)
+f = maker(2)  # f是函数对象，可以调用action函数
 g = maker(3)
 print(f)
 print(f(3))  # 9 3 ** 2
