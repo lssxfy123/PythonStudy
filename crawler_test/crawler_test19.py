@@ -36,7 +36,7 @@ class CrawlerPictures:
 
     # 获取第一层所有url
     def get_first_layer_url(self):
-        with open(self.urls_file) as file_lines:
+        with open(self.urls_file, 'r', encoding='UTF-8') as file_lines:
             lines = file_lines.readlines()
             for line in lines:
                 picture = PictureUrl(line, self.host_headers)
