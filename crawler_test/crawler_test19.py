@@ -44,6 +44,7 @@ class CrawlerPictures:
                 self.first_layer_urls.append(picture)
 
     # 获取所有图片
+
     def get_images(self):
         for picture in self.first_layer_urls:
             for url in picture.urls:
@@ -58,6 +59,7 @@ class CrawlerPictures:
         win32clipboard.EmptyClipboard()
         win32clipboard.SetClipboardText(file_path)
         win32clipboard.CloseClipboard()
+        time.sleep(10)
 
         # 鼠标定位输入框并点击
         windll.user32.SetCursorPos(700, 510)
@@ -107,7 +109,7 @@ class PictureUrl:
         if not os.path.exists(file_path):
             os.makedirs(file_path)
         self.file_path = file_path
-        self.header_url = 'https://mtl.ttsqgs.com/images/img/'
+        self.header_url = 'https://mtl.gzhuibei.com/images/img/'
         # self.proxies = {'http': '118.190.95.35:9001'}
         # html = requests.get(picture_url, headers=host_headers)
         # self.is_found = True
