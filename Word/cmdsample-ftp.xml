@@ -1,0 +1,36 @@
+<Command>
+	<CmdName>StructuredWord</CmdName>
+	<CmdId>421b4c3b-843e-40b9-ac47-7905eef09fbe</CmdId>
+	<TaskOverTime>15</TaskOverTime>
+	<operate>{"isAutomatedTest":"true","ftpPath":"/test/229/docbooktest/xml/testsample.xml","sectionId":"297","projectId":"4465","userId":"471"}</operate>
+	<Params>
+		<Param name="content" value="/test/229/docbooktest/word/testsample.docx" type="file:Word">
+			<Param name="ftpName" value="172.19.57.175"/>
+			<Param name="ftpPort" value="21"/>
+			<Param name="ftpUserName" value="uftp"/>
+			<Param name="ftpUserPassword" value="uftp"/>
+		</Param>
+		<Param name="journalMeta" value="/test/229/docbooktest/meta.xml" type="file:Xml">
+			<Param name="ftpName" value="172.19.57.175"/>
+			<Param name="ftpPort" value="21"/>
+			<Param name="ftpUserName" value="uftp"/>
+			<Param name="ftpUserPassword" value="uftp"/>
+		</Param>
+		<Param name="tagName" value="DocBook" type="string"/>
+		<Param name="sequence" value="contentPreprocess,contentStructured,xmlOutput" type="string"/>
+		<Param name="blockOutType" value="1" type="string"/>
+		<Param name="bookType" value="TestBook" type="string"/>
+		<Param name="contentCopy" value="" type="file:Word">
+			<Param name="ftpName" value="172.19.57.175"/>
+			<Param name="ftpPort" value="21"/>
+			<Param name="ftpUserName" value="uftp"/>
+			<Param name="ftpUserPassword" value="uftp"/>
+		</Param>
+		<Param name="result" value="/test/229/docbooktest/xml/testsample.xml" type="file:Xml">
+			<Param name="ftpName" value="172.19.57.175"/>
+			<Param name="ftpPort" value="21"/>
+			<Param name="ftpUserName" value="uftp"/>
+			<Param name="ftpUserPassword" value="uftp"/>
+		</Param>
+	</Params>
+</Command>
