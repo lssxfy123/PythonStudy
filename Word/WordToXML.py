@@ -266,6 +266,7 @@ def executestructure(worddir,xmldir,booktype):
                 else:
                     data={"cmd":var_command,"queueName":queueName,"callBackUrl":callBackUrl,"routingKey":routingKey}
                 data=urllib.parse.urlencode(data).encode('utf-8')
+                print(url)
                 req=urllib.request.Request(url,data=data)
                 try:
                     response=urllib.request.urlopen(req,timeout=120)
