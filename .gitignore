@@ -21,3 +21,7 @@
 /crawler_test/urls_at.txt
 /crawler_test/urls_nv.txt
 /crawler_test/urls_tj.txt
+/crawler_test/urls_qt.txt
+/crawler_test/urls_xn.txt
+/crawler_test/urls_xv.txt
+*.ipynb_checkpoints
