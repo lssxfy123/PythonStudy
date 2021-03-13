@@ -25,3 +25,7 @@
 /crawler_test/urls_xn.txt
 /crawler_test/urls_xv.txt
 *.ipynb_checkpoints
+*.ipynb_checkpoints
+/python_word/*.xml
+/python_word/xml
+*.pyc
