@@ -29,3 +29,4 @@
 /python_word/*.xml
 /python_word/xml
 *.pyc
+/crawler_test/urls_lg.txt
